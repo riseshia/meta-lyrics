@@ -2,11 +2,11 @@
 
 var buildUrl = function(sites, keyword) {
   var googleUrl = "https://www.google.co.jp/search?q=";
-  var sitesQuery = "";
+  var siteParams = [];
+  for(var name in sites) { siteParams.push("site:" + sites[name]) }
+  var fullPath = keyword + " 歌詞 " + siteParams.join(" OR ");
 
-  for(var name in sites) { sitesQuery += ("site:" + sites[name]) }
-
-  return googleUrl + encodeURI(sitesQuery + " 歌詞 " + keyword);
+  return googleUrl + encodeURI(fullPath);
 };
 
 var getSites = function(url, onloadCb) {
@@ -34,6 +34,16 @@ $(function() {
     window.open(buildUrl(targetSites, keyword));
 
     $(this).val("");
+    return false;
+  });
+
+  $("#submit").click(function(e) {
+    var $keyword = $("#keyword")
+    var keyword = $keyword.val();
+
+    window.open(buildUrl(targetSites, keyword));
+
+    $keyword.val("");
     return false;
   });
 });
